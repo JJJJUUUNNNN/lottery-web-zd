@@ -225,11 +225,14 @@ function resetPrize(currentPrizeIndex) {
 }
 
 let setPrizeData = (function () {
-  return function (currentPrizeIndex, count, isInit) {
+  return function (currentPrizeIndex, _luckyCount, isInit) {
+
     let currentPrize = prizes[currentPrizeIndex],
       type = currentPrize.type,
       elements = prizeElement[type],
       totalCount = currentPrize.count;
+
+    console.log(['setPrizeData'],currentPrizeIndex,_luckyCount,currentPrize.count)
 
     if (!elements) {
       elements = {
@@ -239,7 +242,6 @@ let setPrizeData = (function () {
       };
       prizeElement[type] = elements;
     }
-
     if (!prizeElement.prizeType) {
       prizeElement.prizeType = document.querySelector("#prizeType");
       prizeElement.prizeLeft = document.querySelector("#prizeLeft");
@@ -257,12 +259,13 @@ let setPrizeData = (function () {
       }
     }
 
+
     if (lasetPrizeIndex !== currentPrizeIndex) {
       let lastPrize = prizes[lasetPrizeIndex],
         lastBox = document.querySelector(`#prize-item-${lastPrize.type}`);
         if(lastBox){
           lastBox.classList.remove("shine");
-          lastBox.classList.add("done");
+          // lastBox.classList.add("done");
         }
       elements.box && elements.box.classList.add("shine");
       prizeElement.prizeType.textContent = currentPrize.text;
@@ -271,19 +274,13 @@ let setPrizeData = (function () {
       lasetPrizeIndex = currentPrizeIndex;
     }
 
-    if (currentPrizeIndex === 0) {
-      prizeElement.prizeType.textContent = mockData.prizes[0].title;
-      prizeElement.prizeText.textContent = mockData.prizes[0].text;
-      prizeElement.prizeLeft.textContent = 999
-      return;
-    }
 
-    count = totalCount - count;
-    count = count < 0 ? 0 : count;
-    let percent = (count / totalCount).toFixed(2);
+    _luckyCount = totalCount - _luckyCount;
+    _luckyCount = _luckyCount < 0 ? 0 : _luckyCount;
+    let percent = (_luckyCount / totalCount).toFixed(2);
     elements.bar && (elements.bar.style.width = percent * 100 + "%");
-    elements.text && (elements.text.textContent = count + "/" + totalCount);
-    prizeElement.prizeLeft.textContent = count;
+    elements.text && (elements.text.textContent = _luckyCount + "/" + totalCount);
+    prizeElement.prizeLeft.textContent = _luckyCount;
   };
 })();
 
@@ -335,7 +332,7 @@ let selectedPriceLevel = 1; // 默认选中第一等奖
 // ...
 
 // 新增的函数，用于设置抽奖等级
-function setPriceLevel(level) {
+function setPrizeLevel(level) {
   if (level >= 1 && level <= 4) {
     selectedPriceLevel = level;
     resetPrize(level); // 重置抽奖界面，根据需要进行修改
@@ -353,5 +350,5 @@ export {
   setPrizes,
   resetPrize,
   addQipao,
-  setPriceLevel
+  setPrizeLevel
 };

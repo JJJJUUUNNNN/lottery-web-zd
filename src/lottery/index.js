@@ -7,7 +7,7 @@ import {
   showPrizeList,
   setPrizeData,
   resetPrize,
-  setPriceLevel
+  setPrizeLevel
 } from "./prizeList";
 import { NUMBER_MATRIX } from "./config.js";
 import mockData from "./mock"
@@ -63,30 +63,37 @@ let selectedCardIndex = [],
   currentLuckys = [];
 
   console.log(basicData)
-window.setPriceLevel = (level)=>{
-  setPriceLevel(level)
+window.setPrizeLevel = (level)=>{
+  setPrizeLevel(level)
   currentPrizeIndex = level;
   currentPrize = basicData.prizes[level];
 
 
   for (let index = 1; index < 5; index++) {
-    // if(index == level){
-    //   continue
-    // }
+    if(index == level){
+      continue
+    }
     // let luckys = basicData.luckyUsers[_currentPrize.type];
     // console.log(EACH_COUNT[index])
     // let luckyCount = (luckys ? luckys.length : 0) + EACH_COUNT[index];
     // // 修改左侧prize的数目和百分比
     // console.log(index, luckyCount,EACH_COUNT[index])
     // setPrizeData(index, luckyCount,false);
-    
+    console.log(['index',index])
     var _currentPrize = basicData.prizes[index];
     let luckys = basicData.luckyUsers[_currentPrize.type];
-    let luckyCount = (luckys ? luckys.length : 0) + EACH_COUNT[index];
+    let luckyCount = (luckys ? luckys.length : 0);
     // 修改左侧prize的数目和百分比
     console.log(index, luckyCount)
     setPrizeData(index, luckyCount);
   }
+
+  
+  var _currentPrize = basicData.prizes[currentPrizeIndex];
+  let luckys = basicData.luckyUsers[_currentPrize.type];
+  let luckyCount = (luckys ? luckys.length : 0) ;
+  // 修改左侧prize的数目和百分比
+  setPrizeData(currentPrizeIndex, luckyCount);
 
 }
 
@@ -137,6 +144,8 @@ function startMock() {
     currentPrize = basicData.prizes[currentPrizeIndex];
     break;
   }
+
+  
   console.error(currentPrizeIndex, currentPrize);
   showPrizeList(currentPrizeIndex);
   let curLucks = basicData.luckyUsers[currentPrize.type];
@@ -894,7 +903,7 @@ function changePrize() {
   let luckys = basicData.luckyUsers[currentPrize.type];
   let luckyCount = (luckys ? luckys.length : 0) + EACH_COUNT[currentPrizeIndex];
   // 修改左侧prize的数目和百分比
-  setPrizeData(currentPrizeIndex, luckyCount);
+  setPrizeData(currentPrizeIndex, luckyCount);  
 }
 
 /**
